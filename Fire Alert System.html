@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Status</title>
+    <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body>
+    <section class="text-gray-600 body-font">
+        <div class="container px-5 py-24 mx-auto">
+          <div class="flex flex-wrap w-full mb-20">
+            <div class="lg:w-1/2 w-full mb-6 lg:mb-0">
+              <h1 class="sm:text-3xl text-2xl font-medium title-font mb-2 text-gray-900">Status Of Surroundings</h1>
+              <div class="h-1 w-20 bg-red-500 rounded"></div>
+            </div>
+            <p class="lg:w-1/2 w-full leading-relaxed text-gray-500"></p>
+          </div>
+          <div class="flex flex-wrap -m-4">
+            <div class="xl:w-1/4 md:w-1/2 p-4">
+              <div class="bg-gray-100 p-6 rounded-lg">
+                <img class="h-40 rounded w-full object-cover object-center mb-6" src="D:\Installed_software\Xampp Setup\htdocs\tailwindTest\tempPic.jpg" alt="content">
+                <h3 class="tracking-widest text-red-500 text-xs font-medium title-font">Temperature</h3>
+                <h2 class="text-lg text-gray-900 font-medium title-font mb-4" id="temp"></h2>
+                <p class="leading-relaxed text-base">In a possible fire breakout condition room temperature can range from 100 to 600 degrees.This superhot condition can scoroch lungs and melt human skin.</p>
+              </div>
+            </div>
+            <div class="xl:w-1/4 md:w-1/2 p-4">
+              <div class="bg-gray-100 p-6 rounded-lg">
+                <img class="h-40 rounded w-full object-cover object-center mb-6" src="D:\Installed_software\Xampp Setup\htdocs\tailwindTest\fire.jpg" alt="content">
+                <h3 class="tracking-widest text-red-500 text-xs font-medium title-font">Fire Status</h3>
+                <h2 class="text-lg text-gray-900 font-medium title-font mb-4" id="fire"></h2>
+                <p class="leading-relaxed text-base"> In less than 30 seconds a small flame can turn into a major fire. It only takes minutes for thick black smoke to fill a house or for it to be engulfed in flames.</p>
+              </div>
+            </div>
+            <div class="xl:w-1/4 md:w-1/2 p-4">
+              <div class="bg-gray-100 p-6 rounded-lg">
+                <img class="h-40 rounded w-full object-cover object-center mb-6" src="D:\Installed_software\Xampp Setup\htdocs\tailwindTest\gas.jpg" alt="content">
+                <h3 class="tracking-widest text-red-500 text-xs font-medium title-font">Gas Leakage Update</h3>
+                <h2 class="text-lg text-gray-900 font-medium title-font mb-4">No gas leakage found</h2>
+                <p class="leading-relaxed text-base">Long term exposure to gas leak, on the other hand, has hazardous effects on health. Inhaling deeply concentrated gas can lead to asphyxia and possible death.</p>
+              </div>
+            </div>
+            <div class="xl:w-1/4 md:w-1/2 p-4">
+              <div class="bg-gray-100 p-6 rounded-lg">
+                <img class="h-40 rounded w-full object-cover object-center mb-6" src="D:\Installed_software\Xampp Setup\htdocs\tailwindTest\hum1.jpg" alt="content">
+                <h3 class="tracking-widest text-red-500 text-xs font-medium title-font">Humidity</h3>
+                <h2 class="text-lg text-gray-900 font-medium title-font mb-4" id = "hum"></h2>
+                <p class="leading-relaxed text-base">The lower the relative humidity,vigorously a fire will burn.High level of humidity in a surrounding indicates that there is no fire breakout.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <script src="https://www.gstatic.com/firebasejs/8.7.1/firebase-app.js"></script>
+      <script src="https://www.gstatic.com/firebasejs/8.7.1/firebase-auth.js"></script>
+      <script src="https://www.gstatic.com/firebasejs/8.7.1/firebase-database.js"></script>
+      <script>
+        // Your web app's Firebase configuration
+        // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+        var firebaseConfig = {
+            apiKey: "AIzaSyD9JLAvr0VxoCmkHINnX56esRASZy6zkXA",
+            authDomain: "dht11andflamesensor.firebaseapp.com",
+            databaseURL: "https://dht11andflamesensor-default-rtdb.asia-southeast1.firebasedatabase.app",
+            projectId: "dht11andflamesensor",
+            storageBucket: "dht11andflamesensor.appspot.com",
+            messagingSenderId: "386718846805",
+            appId: "1:386718846805:web:1064711c8f1767586729dc"
+
+        };
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        
+        var ref = firebase.database().ref("FirebaseIOT");
+        
+
+        ref.on("value",function(snapshot)
+        {
+            data = snapshot.val()
+            console.log(data);
+            var fire = data.FireStatus;
+            var ipAdd = data.LocalIP;           
+            var temp = data.temperature
+            var hum = data.humidity;
+
+            getData(fire,ipAdd,temp,hum);
+
+        })
+        
+        
+
+        function getData(fire,ip,t,h)
+        {
+
+            var firex = document.getElementById('fire');
+            var tx = document.getElementById('temp');
+            var hx = document.getElementById('hum');
+           
+            if(fire == false)
+            {
+                firex.innerHTML = "No fire breakout";
+            }
+            else
+                firex.innerHTML = "Possible fire breakout";
+
+            
+            tx.innerHTML = t +" "+"\u00B0" + "C";
+
+            hx.innerHTML = h + "%";
+            
+
+            
+        }
+        
+
+    </script>
+      
+</body>
+</html>
